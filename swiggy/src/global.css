@@ -32,3 +32,20 @@ cursor: pointer;
     flex-wrap: wrap;
     gap:18px
 }
+
+
+.search{
+    display: flex;
+    gap:5px;
+}
+
+.btn{
+    background: #ff8036;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    padding: 5px;
+    font-size: medium;
+    cursor: pointer;
+    margin: 10px;
+}
