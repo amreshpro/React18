@@ -21,13 +21,13 @@ export default function RestaurantCard({
     >
       <img
         style={{ width: "100%", height: "150px" }}
-        src={`${baseUrl}/${cloudinaryImageId}`}
+        src={`${baseUrl}/${cloudinaryImageId??null}`}
         alt="food"
       />
       <h3>{name}</h3>
-      <h4>{cuisines.join(", ")}</h4>
+      <h4>{cuisines?.join(", ")}</h4>
       <h4>{avgRating} stars</h4>
-      <h4>{sla.deliveryTime} minutes</h4>
+      <h4>{sla?.deliveryTime} minutes</h4>
     </div>
   );
 }

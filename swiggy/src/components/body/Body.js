@@ -1,36 +1,85 @@
-import { useState } from "react";
-import { mockData } from "../../utils/mockData";
+import { useEffect, useState } from "react";
+
 import RestaurantCard from "./RestaurantCard";
+import { API_URL } from "../../utils/constant";
+import Shimmer from "../Shimmer";
 
 export default function Body() {
-  const [restaurantList, setRestaurantList] = useState(mockData);
-  console.log(restaurantList);
-  return (
+  const [restaurantList, setRestaurantList] = useState([]);
+  const [filterList, setFilterList] = useState([]);
+  const [searchText, setSearchText] = useState("");
+  const [isFound, setIsFound] = useState(true)
+
+  // fetch after rendering UI
+  useEffect(() => {
+    fetchDataFromApi();
+  }, []);
+
+  const fetchDataFromApi = async () => {
+    const response = await fetch(`${API_URL}`);
+    const data = await response.json();
+    setRestaurantList(
+      data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+    );
+    setFilterList(
+      data?.data?.cards[1]?.card?.card?.gridElements?.infoWithStyle?.restaurants
+    );
+  };
+
+  const searchHandler = () => {
+    const searchedList = filterList.filter((item) => {
+      if (item?.info?.name.toLowerCase().includes(searchText.toLowerCase())) {
+        return item;
+      }
+    });
+console.log(searchedList)
+searchedList.length==0?setIsFound(false):setIsFound(true);
+
+  searchedList.length>0 &&  setFilterList(searchedList);
+  };
+
+  return filterList.length == 0 ? (
+    <Shimmer />
+  ) : (
     <div className="body">
-      <div className="search filter ">
+      <div className="search">
+        <input
+          type="text"
+          value={searchText}
+          onChange={(e) => setSearchText(e.target.value)}
+          placeholder="Search your food"
+        />
+        <button onClick={() => searchHandler()}>Search</button>
+      </div>
+      <div className=" filter ">
         <button
-        className="btn"
+          className="btn"
           onClick={() => {
             const filterList = restaurantList.filter((item) => {
-              if (parseInt(item?.data?.avgRating) >= 4) return item;
+              if (item?.info?.avgRating >= 4.5) return item;
             });
-            setRestaurantList(filterList);
+            setFilterList(filterList);
           }}
         >
           Top Rated Restaurant
         </button>
+     
         <button
-        className="btn"
+          className="btn"
           onClick={() => {
-            setRestaurantList(mockData);
+            const filterList = restaurantList.filter((item) => {
+              if (item?.info?.sla?.deliveryTime <= 15) return item;
+            });
+            setFilterList(filterList);
           }}
         >
-          Clear Filter
+          Fastest Delivery/15min
         </button>
       </div>
       <div className="res-container">
-        {restaurantList?.map((data) => {
-          return <RestaurantCard key={data?.data?.id} {...data?.data} />;
+        
+        { filterList?.map((data) => {
+          return <RestaurantCard key={data?.info?.id} {...data?.info} />;
         })}
       </div>
     </div>
