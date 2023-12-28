@@ -1,14 +1,14 @@
 import { useEffect, useState } from "react";
 
 import RestaurantCard from "./RestaurantCard";
-import { API_URL } from "../../utils/constant";
-import Shimmer from "../Shimmer";
+import { API_URL } from "../utils/constant";
+import Shimmer from "./Shimmer";
 
 export default function Body() {
   const [restaurantList, setRestaurantList] = useState([]);
   const [filterList, setFilterList] = useState([]);
   const [searchText, setSearchText] = useState("");
-  const [isFound, setIsFound] = useState(true)
+  console.log(filterList);
 
   // fetch after rendering UI
   useEffect(() => {
@@ -32,10 +32,8 @@ export default function Body() {
         return item;
       }
     });
-console.log(searchedList)
-searchedList.length==0?setIsFound(false):setIsFound(true);
-
-  searchedList.length>0 &&  setFilterList(searchedList);
+    console.log(searchedList);
+    setFilterList(searchedList);
   };
 
   return filterList.length == 0 ? (
@@ -55,30 +53,26 @@ searchedList.length==0?setIsFound(false):setIsFound(true);
         <button
           className="btn"
           onClick={() => {
-            const filterList = restaurantList.filter((item) => {
+         
+            setFilterList(restaurantList);
+          }}
+        >
+          All
+        </button>
+        <button
+          className="btn"
+          onClick={() => {
+            const topRatedList = restaurantList.filter((item) => {
               if (item?.info?.avgRating >= 4.5) return item;
             });
-            setFilterList(filterList);
+            setFilterList(topRatedList);
           }}
         >
           Top Rated Restaurant
         </button>
-     
-        <button
-          className="btn"
-          onClick={() => {
-            const filterList = restaurantList.filter((item) => {
-              if (item?.info?.sla?.deliveryTime <= 15) return item;
-            });
-            setFilterList(filterList);
-          }}
-        >
-          Fastest Delivery/15min
-        </button>
       </div>
       <div className="res-container">
-        
-        { filterList?.map((data) => {
+        {filterList?.map((data) => {
           return <RestaurantCard key={data?.info?.id} {...data?.info} />;
         })}
       </div>
