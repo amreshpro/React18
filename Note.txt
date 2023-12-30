@@ -1,0 +1,4 @@
+Parent componentDidMount is called after every thing will be called in child .
+
+order
+1.Parent Constructor->2.Parent Render->3.Child Constructor->4.Child Render->5.Child componentDidMount->6.Parent componentDidMount
