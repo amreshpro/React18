@@ -44,8 +44,8 @@ if(!isOnline){return <h1>Please Check your Internet Connection.</h1>}
   return filterList.length == 0 ? (
     <Shimmer />
   ) : (
-    <div className="body">
-      <div className="search">
+    <div className="flex flex-col justify-center">
+      <div className="w-full flex px-4 py-2">
         <input
         className="py-2 px-3 border-b-4 border-orange-500 focus:border-none"
           type="text"

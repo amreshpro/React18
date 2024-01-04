@@ -4,14 +4,13 @@ const baseUrl ="https://media-assets.swiggy.com/swiggy/image/upload/fl_lossy,f_a
 export default function RestaurantCard({
   name,
   cuisines,
- 
-  sla,
+   sla,
   avgRating,
   cloudinaryImageId,
 }) {
   return (
     <div
-      className="res-card"
+      className=" bg-gray-100 rounded-lg"
       style={{
         width: "200px",
         height: "300px",
