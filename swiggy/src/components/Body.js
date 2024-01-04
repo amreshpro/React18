@@ -3,11 +3,13 @@ import { useEffect, useState } from "react";
 import RestaurantCard from "./RestaurantCard";
 import { API_URL } from "../utils/constant";
 import Shimmer from "./Shimmer";
+import useOnlineStatus from "../utils/useOnlineStatus";
 
 export default function Body() {
   const [restaurantList, setRestaurantList] = useState([]);
   const [filterList, setFilterList] = useState([]);
   const [searchText, setSearchText] = useState("");
+  const isOnline = useOnlineStatus();
   console.log(filterList);
 
   // fetch after rendering UI
@@ -36,18 +38,22 @@ export default function Body() {
     setFilterList(searchedList);
   };
 
+
+if(!isOnline){return <h1>Please Check your Internet Connection.</h1>}
+
   return filterList.length == 0 ? (
     <Shimmer />
   ) : (
     <div className="body">
       <div className="search">
         <input
+        className="py-2 px-3 border-b-4 border-orange-500 focus:border-none"
           type="text"
           value={searchText}
           onChange={(e) => setSearchText(e.target.value)}
           placeholder="Search your food"
         />
-        <button onClick={() => searchHandler()}>Search</button>
+        <button class="bg-blue-500 px-4 py-1 rounded-lg mx-2" onClick={() => searchHandler()}>Search</button>
       </div>
       <div className=" filter ">
         <button
